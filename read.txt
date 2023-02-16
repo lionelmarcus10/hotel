@@ -1,0 +1,2 @@
+npm run dev for front end ( hotel_sep ) 
+npm run start ou npm run start --watch ( hot reloat ) for back end ( hotel_sep_api )
