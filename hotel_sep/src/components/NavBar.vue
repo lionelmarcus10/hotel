@@ -26,10 +26,10 @@
             <a href="/conferences"  class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Conférences</a>
             </li>
             <li>
-            <a href="/chambres" class="block border-2 border-black px-7 py-2">Réserver</a>
+            <a href="/chambres-disponible" class="block border-2 border-black px-7 py-2">Réserver</a>
             </li>
             <li class="py-2">
-            <a href="/chambres"  class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Chambres</a>
+            <a href="/reservations"  class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Mes chambres</a>
             </li>
             <li><SessionButton/></li>
         </ul>

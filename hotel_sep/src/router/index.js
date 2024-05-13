@@ -13,10 +13,10 @@ const  router = createRouter({
     routes: [
         { path: '/', component: Home, name: 'Accueil' },
         { path: '/decouvrir', component: Decouvrir, name: 'Decouvrir' },
-        { path: '/chambres', component: Chambre, name: 'Chambre' },
+        { path: '/chambres-disponible', component: Chambre, name: 'Chambres' },
         { path: "/services", component: Services, name: "Services" },
         { path: '/conferences', component: Conference, name: 'Conference' },
-        { path: '/reserve', component: Reserve , name: 'Reserver'},
+        { path: '/reservations', component: Reserve , name: 'Reservations'},
         { path: "/sign-in", component: ConnectUser, name: "Connexion" },
         { path: "/sign-up", component: CreateUser, name: "Inscription"}
     ],
