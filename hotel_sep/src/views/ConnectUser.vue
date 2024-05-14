@@ -5,7 +5,7 @@ import { SignIn } from 'vue-clerk'
 <template >
   <div class="py-20">
     <div class="flex flex-col w-full h-full items-center justify-center">
-      <SignIn path="/sign-in" redirect-url="/dashboard" routing="path" sign-up-url="/sign-up"  fallback-redirect-url="/dashboard" />
+      <SignIn path="/sign-in" redirect-url="/reservations" routing="path" sign-up-url="/sign-up"  fallback-redirect-url="/reservations" />
     </div>
   </div>
 </template>

@@ -1,3 +1,22 @@
+
+<script setup lang="js">
+import SessionButton from './SessionButton.vue';
+import {   useUser } from 'vue-clerk'
+import { ref, watch } from 'vue';
+
+const { user, isLoaded, isSignedIn } = useUser()
+
+let orgSlug = import.meta.env.VITE_CLERK_ADMIN_ORGANIZATION_SLUG
+const isSlugInList = ref(false)
+
+watch([user, isLoaded], () => {
+  if (isLoaded.value) {
+    const slugList = user.value.organizationMemberships.map(m => m.organization.slug);
+    isSlugInList.value = slugList.includes(orgSlug);
+  }
+}, { immediate: true });
+
+</script>
 <template>
     
     <nav class="bg-white border-gray-200   rounded dark:bg-gray-900 container px-4 md:px-0 lg:px-24 xl:px-56">
@@ -26,19 +45,18 @@
             <a href="/conferences"  class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Conférences</a>
             </li>
             <li>
-            <a href="/chambres-disponible" class="block border-2 border-black px-7 py-2">Réserver</a>
+            <a href="/chambres-disponible" class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Réserver</a>
             </li>
-            <li class="py-2">
+            <li  v-if="isSignedIn && !isSlugInList" class="py-2">
             <a href="/reservations"  class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Mes chambres</a>
             </li>
-            <li><SessionButton/></li>
+            <li v-if="isSlugInList">
+            <a href="/admin-dashboard" class="block py-2 pl-3 pr-4 text-black border-black border-2">Espace admin</a>
+            </li>
+            <li><SessionButton /></li>
         </ul>
         </div>
     </div>
     </nav>
 
 </template>
-
-<script setup lang="js">
-import SessionButton from './SessionButton.vue';
-</script>

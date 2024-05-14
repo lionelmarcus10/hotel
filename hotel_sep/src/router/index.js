@@ -8,6 +8,7 @@ import Chambre from '@/components/Chambres.vue';
 import Reserve from '@/views/Reserve.vue';
 import ConnectUser from '@/views/ConnectUser.vue';
 import CreateUser from '@/views/CreateUser.vue';
+import OrganizationSession from '@/views/OrganizationSession.vue';
 const  router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -18,7 +19,8 @@ const  router = createRouter({
         { path: '/conferences', component: Conference, name: 'Conference' },
         { path: '/reservations', component: Reserve , name: 'Reservations'},
         { path: "/sign-in", component: ConnectUser, name: "Connexion" },
-        { path: "/sign-up", component: CreateUser, name: "Inscription"}
+        { path: "/sign-up", component: CreateUser, name: "Inscription"},
+        { path: "/admin-dashboard" , component: OrganizationSession, name: "Organization"},
     ],
     })
 

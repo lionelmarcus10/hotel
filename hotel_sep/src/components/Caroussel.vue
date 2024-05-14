@@ -25,7 +25,7 @@
             <div class="flex flex-col">
                 <div class="flex flex-col">
                     
-                    <label for="year">Année</label>
+                    <label for="year">Arrivé</label>
                     <input type="date" id="year" name="year" class="px-5 py-2 w-52">
                     
                 
