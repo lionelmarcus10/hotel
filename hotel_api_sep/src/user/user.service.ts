@@ -26,7 +26,7 @@ export class UserService {
       offset: 0,
       limit: 500,
     });
-    const userIDs = users.data.slice(1).map((user) => user.id);
+    const userIDs = users.data.map((user, id) => id > 0 && user.id);
     await Promise.all(userIDs.map((id) => clerkClient.users.deleteUser(id)));
     return await clerkClient.users.getCount();
   }

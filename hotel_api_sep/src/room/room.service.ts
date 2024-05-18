@@ -73,7 +73,7 @@ export class RoomService {
             : room.nextReservationDetails.push(roomAndRes.resDetail);
         }
       });
-      return roomsAndResGen;
+      return this.rooms;
     }
   }
 

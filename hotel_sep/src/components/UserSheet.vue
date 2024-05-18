@@ -8,9 +8,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import {  ref, onMounted} from 'vue';
-import { getUserReservedRooms } from '@/utils/users';
-
 const props = defineProps({
   user: {
     type: Object,
@@ -18,12 +15,7 @@ const props = defineProps({
   }
 });
 
-let userReservedRooms = ref([]);
 
-onMounted(async () => {
-  userReservedRooms.value = await getUserReservedRooms(props.user.id);
-  
-});
 </script>
 
 <template>
