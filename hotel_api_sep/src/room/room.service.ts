@@ -1,13 +1,21 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Room } from './room.interface';
 import Room_db from '../local_db';
-import { RoomeReservationDetails } from './dto/room.dto';
-import { generateRooms } from '../faker/fakeRoom';
+import { RoomReservationDetails } from './dto/room.dto';
+import { generateRoomReservationDetails, generateRooms } from '../faker/fake';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class RoomService {
+  private static instance: RoomService;
   rooms: Room[] = Room_db;
+
+  static getInstance(): RoomService {
+    if (!RoomService.instance) {
+      RoomService.instance = new RoomService();
+    }
+    return RoomService.instance;
+  }
 
   @Cron(CronExpression.EVERY_MINUTE)
   handleCron() {
@@ -21,6 +29,7 @@ export class RoomService {
         if (currentDate > reservationDateEnd) {
           room.reserved = false;
           room.reservationDetails = null;
+          room.previousReservationDetails.push(room.reservationDetails);
         }
       }
       return room;
@@ -46,21 +55,26 @@ export class RoomService {
     return this.rooms;
   }
 
-  // populate rooms add
-  populateAddRooms(num: number): Room[] {
-    // generate random rooms with fakerjs
-    this.rooms = [...this.rooms, ...generateRooms(num)];
-    // check elements unicity on id field and change if needed
-    const ids = new Set();
-    this.rooms = this.rooms.map((room) => {
-      if (ids.has(room.id)) {
-        room.id = Math.floor(Math.random() * 1000);
-      }
-      ids.add(room.id);
-      return room;
-    });
-
-    return this.rooms;
+  async populateRoomsWithReservations(num: number) {
+    const roomsAndResGen = await generateRoomReservationDetails(num, this);
+    if (typeof roomsAndResGen === 'string') {
+      return roomsAndResGen;
+    } else {
+      roomsAndResGen.forEach((roomAndRes) => {
+        const room = this.rooms.find((room) => room.id === roomAndRes.roomId);
+        if (room) {
+          // attibuer la reservation to the type of reservation (futur, current , previous)
+          // attribute value to reserved boolean based on the reservation type
+          room.reserved = roomAndRes.dateType === 'ongoing';
+          room.reserved
+            ? (room.reservationDetails = roomAndRes.resDetail)
+            : roomAndRes.dateType === 'past'
+            ? room.previousReservationDetails.push(roomAndRes.resDetail)
+            : room.nextReservationDetails.push(roomAndRes.resDetail);
+        }
+      });
+      return roomsAndResGen;
+    }
   }
 
   // delete all rooms
@@ -102,7 +116,7 @@ export class RoomService {
   }
 
   // detail d'une reservation
-  findReservationDetailById(id: number): RoomeReservationDetails | string {
+  findReservationDetailById(id: number): RoomReservationDetails | string {
     const temp_db = this.rooms.find((room) => room.id === id);
     if (temp_db.reserved) {
       return temp_db.reservationDetails;
@@ -112,7 +126,7 @@ export class RoomService {
   }
 
   // reserver une chambre
-  reserveRoom(id: number, reservation_details: RoomeReservationDetails) {
+  reserveRoom(id: number, reservation_details: RoomReservationDetails) {
     // find room
     const RoomUpdate = this.rooms.find((room) => room.id === id);
     if (!RoomUpdate) {
@@ -131,6 +145,35 @@ export class RoomService {
         return `Room ${id} reserved successfully, reservation details : ${reservation_details}`;
       } else {
         return new NotFoundException('Room already reserved');
+      }
+    }
+  }
+
+  // modification d'une reservation
+  updateReservation(
+    id: number,
+    reservation_details: Partial<RoomReservationDetails>,
+  ) {
+    // find room
+    const RoomUpdate = this.rooms.find((room) => room.id === id);
+    if (!RoomUpdate) {
+      return new NotFoundException('Room not found');
+    } else {
+      if (RoomUpdate.reserved) {
+        // update room
+        RoomUpdate.reservationDetails = {
+          ...RoomUpdate.reservationDetails,
+          ...reservation_details,
+        };
+
+        // update db
+        const UpdatedRoom = this.rooms.map((room) =>
+          room.id === id ? RoomUpdate : room,
+        );
+        this.rooms = [...UpdatedRoom];
+        return `Reservation details for room ${id} updated successfully`;
+      } else {
+        return new NotFoundException('Room not reserved yet');
       }
     }
   }
@@ -155,35 +198,6 @@ export class RoomService {
         return `Reservation for room ${id} deleted successfully`;
       } else {
         return new NotFoundException('Room not reserved');
-      }
-    }
-  }
-
-  // modification d'une reservation
-  updateReservation(
-    id: number,
-    reservation_details: Partial<RoomeReservationDetails>,
-  ) {
-    // find room
-    const RoomUpdate = this.rooms.find((room) => room.id === id);
-    if (!RoomUpdate) {
-      return new NotFoundException('Room not found');
-    } else {
-      if (RoomUpdate.reserved) {
-        // update room
-        RoomUpdate.reservationDetails = {
-          ...RoomUpdate.reservationDetails,
-          ...reservation_details,
-        };
-
-        // update db
-        const UpdatedRoom = this.rooms.map((room) =>
-          room.id === id ? RoomUpdate : room,
-        );
-        this.rooms = [...UpdatedRoom];
-        return `Reservation details for room ${id} updated successfully`;
-      } else {
-        return new NotFoundException('Room not reserved yet');
       }
     }
   }

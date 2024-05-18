@@ -1,15 +1,10 @@
-<script setup>
-
-</script>
-<style scoped>
-</style>
 <template>
-    <div class="container px-4 md:px-0 lg:px-24 xl:px-56 pt-8 pb-16 ">
+    <div class="container px-4 md:px-5 lg:px-24 xl:px-56 pt-8 pb-16 ">
         <hr class="bg-black h-[3px]">
         <div class="flex flex-row flex-wrap flex-reverse justify-between pt-6">
             <div class="flex flex-col space-y-7 pb-3">
                 <div class="">
-                    <p>15. rue du château <br/>
+                    <p>15. rue du château<br/>
                     75010 Paris. France | <span class="font-bold">01 23 45 67 89</span></p>
                 </div>
                 <div class="flex flex-row flex-nowrap space-x-4">
@@ -38,5 +33,4 @@
             </div>
         </div>
     </div>
-    
 </template>

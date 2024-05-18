@@ -17,7 +17,10 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 export class AppModule {}
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    cors: true,
+    rawBody: true,
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Hotel rooms API')
