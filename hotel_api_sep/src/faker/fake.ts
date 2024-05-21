@@ -57,6 +57,7 @@ export async function generateRoomReservationDetails(
       reservationEndDate: reservationEndDate,
       reservationStartDate: reservationStartDate,
       userId: randomUsers[i],
+      price: room.price,
     };
     return {
       roomId: room.id,

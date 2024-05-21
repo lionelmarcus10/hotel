@@ -11,6 +11,9 @@
   "dependencies": {
     "@clerk/localizations": "^2.3.1",
     "@tanstack/vue-table": "^8.17.3",
+    "@unovis/ts": "^1.4.1",
+    "@unovis/vue": "^1.4.1",
+    "@vee-validate/zod": "^4.12.8",
     "@vue-stripe/vue-stripe": "^4.5.0",
     "@vueuse/core": "^10.9.0",
     "class-variance-authority": "^0.7.0",
@@ -24,10 +27,12 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul-vue": "^0.1.2",
+    "vee-validate": "^4.12.8",
     "vue": "^3.4.21",
     "vue-clerk": "^0.3.7",
     "vue-router": "^4.3.2",
-    "vue-sonner": "^1.1.2"
+    "vue-sonner": "^1.1.2",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",

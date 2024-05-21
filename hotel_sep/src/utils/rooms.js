@@ -7,3 +7,20 @@ export async function getAllRooms(){
         return rooms;
     }
 }
+
+export async function getStats(){
+        const response = await fetch('http://localhost:3000/stats', {
+          method: 'GET',
+          headers: {
+            'accept': '*/*'
+          }
+        });
+      
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+      
+        const stats = await response.json();
+        
+        return { users: stats.users, rooms: stats.rooms, reservations: stats.reservations, pendingReservations: stats.pendingReservations, finishedReservations: stats.finishedReservations, income: stats.income }
+}

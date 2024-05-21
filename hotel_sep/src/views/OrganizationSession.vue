@@ -2,6 +2,7 @@
 import {  useUser, OrganizationSwitcher, Protect  } from 'vue-clerk'
 import { ref, watch } from 'vue';
 import  Users  from '@/components/Users.vue'
+import AdminActionAndStats  from '@/components/AdminActionAndStats.vue'
 const { user, isLoaded } = useUser()
 
 let orgSlug = import.meta.env.VITE_CLERK_ADMIN_ORGANIZATION_SLUG
@@ -25,6 +26,17 @@ watch([user, isLoaded], () => {
           afterLeaveOrganizationUrl="/" organizationProfileMode="modal"
            appearance="undefined" createOrganizationUrl="/organization"
             organizationProfileUrl="/admin-dashboard" class="pt-5" />
+      </div>
+      <div class="">
+        <h1 class="text-left font-medium py-5 text-4xl">Statistiques</h1>
+      <div class="">
+      <AdminActionAndStats/>
+      <!-- input pour creer n chambres -->
+      <!-- input pour creer n utilisateurs -->
+      <!-- seed chambres based on users -->
+      <!-- supprimer tous les users -->
+      <!-- supprimer tous les chambres -->
+      </div>
       </div>
       <div class="">
         <h1 class="text-left font-medium py-5 text-4xl">Liste des utilisateurs</h1>

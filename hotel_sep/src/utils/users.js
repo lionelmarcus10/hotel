@@ -77,24 +77,7 @@ export async function fetchUserDataById(userId) {
     }
   }
 
-export async function getUserReservedRooms(userId) {
-    try {
-      const response = await fetch(`http://localhost:3000/rooms/reserved`);
-      if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des réservations de l\'utilisateur');
-      }
-      const roomsData = await response.json(); // Extraire les données des réservations de l'utilisateur de la réponse JSON
-      
-      // Mapper les données des réservations pour extraire les champs requis
-      return roomsData.filter(room => room.reservationDetails === userId)
-  
-    } catch (error) {
-      console.error('Erreur lors de la récupération des réservations de l\'utilisateur :', error);
-      throw new error; // Propager l'erreur
-    }
-  }
-
-function formatDate(date) {
+export function formatDate(date) {
   const options = {
     day: "numeric",
     month: "short",
@@ -103,4 +86,37 @@ function formatDate(date) {
     minute: "2-digit",
   };
   return new Intl.DateTimeFormat("fr-FR", options).format(date);
+}
+
+
+
+export function getUserReservations(userId, rooms) {
+  const userReservations = {
+    current: [],
+    previous: [],
+    future: []
+  };
+
+  rooms.forEach(room => {
+    if (room.reservationDetails && room.reservationDetails.userId === userId) {
+      userReservations.current.push(room);
+    }
+
+    if (room.previousReservationDetails.length > 0) {
+      room.previousReservationDetails.forEach(reservation => {
+        if (reservation.userId === userId) {
+          userReservations.previous.push(room);
+        }
+      });
+    }
+
+    if (room.nextReservationDetails.length > 0) {
+      room.nextReservationDetails.forEach(reservation => {
+        if (reservation.userId === userId) {
+          userReservations.future.push(room);
+        }
+      });
+    }
+  });
+  return userReservations;
 }

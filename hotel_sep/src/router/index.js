@@ -9,6 +9,7 @@ import Reserve from '@/views/Reserve.vue';
 import ConnectUser from '@/views/ConnectUser.vue';
 import CreateUser from '@/views/CreateUser.vue';
 import OrganizationSession from '@/views/OrganizationSession.vue';
+import ManageRooms from '@/views/ManageRooms.vue';
 const  router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -20,8 +21,9 @@ const  router = createRouter({
         { path: '/reservations', component: Reserve , name: 'Reservations'},
         { path: "/sign-in", component: ConnectUser, name: "Connexion" },
         { path: "/sign-up", component: CreateUser, name: "Inscription"},
+        { path: "/chambres", component: ManageRooms, name: "Admin Mangement Room"},
         { path: "/admin-dashboard" , component: OrganizationSession, name: "Organization"},
-    ],
+    ],  
     })
 
 export default router

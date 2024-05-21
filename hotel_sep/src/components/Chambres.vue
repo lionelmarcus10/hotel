@@ -1,5 +1,5 @@
 <script setup>
-import DisplayRoom from './DIsplayRoom.vue';
+import DisplayRoom from './DisplayRoom.vue';
 
 
 const Suits = [ "Suite Junior", "Chambre Standart","Chambre Supérieur"];

@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Room } from './room.interface';
 import Room_db from '../local_db';
-import { RoomReservationDetails } from './dto/room.dto';
+import { RoomReservationDetails, stats } from './dto/room.dto';
 import { generateRoomReservationDetails, generateRooms } from '../faker/fake';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { clerkClient } from '@clerk/clerk-sdk-node';
 
 @Injectable()
 export class RoomService {
@@ -36,6 +37,53 @@ export class RoomService {
     });
 
     this.rooms = [...allRooms];
+  }
+
+  // stats
+  async stats(): Promise<stats> {
+    const totalUser = await clerkClient.users.getCount();
+    const finishedReservations = this.rooms.reduce(
+      (acc, room) => acc + room.previousReservationDetails.length,
+      0,
+    );
+    const pendingReservations = this.rooms.filter(
+      (room) => room.reserved,
+    ).length;
+    const reservations =
+      this.rooms.reduce(
+        (acc, room) => acc + room.nextReservationDetails.length,
+        0,
+      ) +
+      finishedReservations +
+      pendingReservations;
+    // Calculate income
+    const income = this.rooms.reduce((acc, room) => {
+      const finishedReservationsIncome = room.previousReservationDetails.reduce(
+        (total, reservation) => total + reservation.price,
+        0,
+      );
+      const pendingReservationsIncome = room.reserved
+        ? room.reservationDetails.price
+        : 0;
+      const nextReservationsIncome = room.nextReservationDetails.reduce(
+        (total, reservation) => total + reservation.price,
+        0,
+      );
+      return (
+        acc +
+        finishedReservationsIncome +
+        pendingReservationsIncome +
+        nextReservationsIncome
+      );
+    }, 0);
+    return {
+      users: totalUser,
+      rooms: this.rooms.length,
+      reservations: reservations,
+      pendingReservations: pendingReservations,
+      finishedReservations: finishedReservations,
+      income: income,
+    };
   }
 
   //create room

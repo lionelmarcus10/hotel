@@ -7,20 +7,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { fetchUsersData } from '@/utils/users';
-import { onMounted, ref, watchEffect } from 'vue';
-import { useRoomStore } from '@/store/roomStore';
+import { fetchUsersData, getUserReservations } from '@/utils/users';
+import { onMounted, ref } from 'vue';
 import UserDeleteBtn from "./UserDeleteBtn.vue"
 import UserSheet from "./UserSheet.vue"
 import { getAllRooms } from '@/utils/rooms';
 
 const users = ref([])
-const roomStore = useRoomStore()
-
+const rooms = ref([])
 onMounted(async () => {
   users.value = await fetchUsersData()
-  let usersReservations = (await getAllRooms()).filter(room => room.reservedDet)
-  
+  rooms.value = await getAllRooms()
 })
 const filterUser = (userId) => {
   users.value = users.value.filter(user => user.userId !== userId)
@@ -52,7 +49,7 @@ const filterUser = (userId) => {
         <TableCell class="text-left">{{ user.email }}</TableCell>
         <TableCell class="text-left">{{ user.phone }}</TableCell>
         <TableCell class="text-right">
-          <UserSheet v-if="user" :user="user" :key="user.userId" />
+          <UserSheet :reservations="getUserReservations(user.userId,rooms)" v-if="user" :user="user" :key="user.userId" />
 
         </TableCell>
         <TableCell class="text-right">

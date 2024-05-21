@@ -10,13 +10,18 @@ import {
 } from '@nestjs/common';
 import { Room } from './room.interface';
 import { RoomService } from './room.service';
-import { RoomReservationDetails } from './dto/room.dto';
+import { RoomReservationDetails, stats } from './dto/room.dto';
 import { ApiBody } from '@nestjs/swagger';
 
 @Controller()
 export class RoomController {
   constructor(private readonly roomService: RoomService) {}
 
+  @Get('/stats')
+  async stats(): Promise<stats> {
+    const globalStat = await this.roomService.stats();
+    return globalStat;
+  }
   // toute les chambres
   @Get('/rooms')
   findAllRooms(): Room[] {

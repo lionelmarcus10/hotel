@@ -8,12 +8,28 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Button } from "@/components/ui/button";
+
+import { formatDate } from '@/utils/users';
+
 const props = defineProps({
   user: {
     type: Object,
     required: true,
-  }
+  },
+    reservations: {
+        type: Object,
+        required: true,
+    }
 });
+
 
 
 </script>
@@ -28,14 +44,108 @@ const props = defineProps({
     </SheetTrigger>
     <SheetContent>
       <SheetHeader>
-        <SheetTitle>{{  user.name }}</SheetTitle>
+        <SheetTitle class="text-3xl">{{  user.name }}</SheetTitle>
         <SheetDescription>
           Ceci est une prévisualisation de la fiche de :  <br/>
           {{ user.name }}, inscrit le {{ user.createdAt }}.
         </SheetDescription>
         <div class="overflow-y-scroll max-h-screen mb-5 pb-40 w-full flex flex-col invisible-scrollbar">
-          <div class="">
-          <!-- Display infos of room that will be modifiable -->
+          
+          <div class="pt-5">
+            <h1 class="font-bold text-xl pb-2">Réservations prochaines</h1>
+              <div v-if="reservations.future.length > 0" v-for="next in reservations.future">
+                <div v-if="next.nextReservationDetails.length > 0" v-for="next_child in next.nextReservationDetails">
+                    <Card class="transition-transform hover:scale-90 scale-95">
+                      <CardHeader class="pb-2">
+                          <CardTitle>
+                          <div>
+                            <span class="">Chambre {{ next.id }}: </span>
+                            <span class="text-lg">{{ next.name }}</span>
+                          </div>
+                          </CardTitle>
+                          
+                          <CardDescription>{{ next_child.description}}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                          <div class="flex flex-col">
+                            <div class="flex flex-row justify-between">
+                                  <p>Prix par jour</p>
+                                  <p>{{ next_child.price }}$</p>
+                              </div>
+                              <div class="flex flex-row justify-between">
+                                  <p>Nombre de jours</p>
+                                  <p>{{ next_child.numberOfDays }}</p>
+                              </div>
+                              <div class="flex flex-row justify-between">
+                                  <p>Prix total</p>
+                                  <p>{{ next_child.price * next_child.numberOfDays }}$</p>
+                              </div>
+                          </div>
+                      </CardContent>
+                      <CardFooter class="flex flex-col w-full !px-7 gap-2 pb-4">
+                       <p class="text-left"> Du {{ formatDate(new Date(next_child.reservationStartDate)) }} au  {{ formatDate(new Date(next_child.reservationEndDate)) }}</p>
+
+                          <Button class="w-full">
+                            <a target="_blank" href="/chambres-disponible">Voir la chambre</a>
+                          </Button>
+                      </CardFooter>
+                  </Card>
+                  </div>
+                  
+              </div>
+              <div v-else>
+                <p class="text-center pt-5">Aucune réservation à venir</p>
+                </div>
+          </div>
+          
+          <div class="pt-5">
+            <h1 class="font-bold text-xl pb-2">Réservations termnié</h1>
+              <div v-if="reservations.previous.length > 0" v-for="prev in reservations.previous">
+              
+                <div v-if="prev.previousReservationDetails.length > 0" v-for="prev_child in prev.previousReservationDetails">
+                    <Card class="transition-transform  hover:scale-90 scale-95">
+                      <CardHeader class="pb-2">
+                          <CardTitle>
+                          <div>
+                            <span class="">Chambre {{ prev.id }}: </span>
+                            <span class="text-lg">{{ prev.name }}</span>
+                          </div>
+                          </CardTitle>
+                          
+                          <CardDescription>
+                            {{ prev_child.description}}
+                          </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                          <div class="flex flex-col">
+                            <div class="flex flex-row justify-between">
+                                  <p>Prix par jour</p>
+                                  <p>{{ prev_child.price }}$</p>
+                              </div>
+                              <div class="flex flex-row justify-between">
+                                  <p>Nombre de jours</p>
+                                  <p>{{ prev_child.numberOfDays }}</p>
+                              </div>
+                              <div class="flex flex-row justify-between">
+                                  <p>Prix total</p>
+                                  <p>{{ prev_child.price * prev_child.numberOfDays }}$</p>
+                              </div>
+                          </div>
+                      </CardContent>
+                      <CardFooter class="flex flex-col w-full !px-7 gap-2 pb-4">
+                       <p class="text-left"> Du {{ formatDate(new Date(prev_child.reservationStartDate)) }} au  {{ formatDate(new Date(prev_child.reservationEndDate)) }}</p>
+
+                          <Button class="w-full">
+                            <a target="_blank" href="/chambres-disponible">Voir la chambre</a>
+                          </Button>
+                      </CardFooter>
+                  </Card>
+                  </div>
+                  
+              </div>
+              <div v-else>
+                <p class="text-center pt-5">Aucune réservation à passé</p>
+                </div>
           </div>
         </div>
       </SheetHeader>
