@@ -59,7 +59,8 @@ export class RoomService {
     // Calculate income
     const income = this.rooms.reduce((acc, room) => {
       const finishedReservationsIncome = room.previousReservationDetails.reduce(
-        (total, reservation) => total + reservation.price,
+        (total, reservation) =>
+          total + reservation.price * reservation.numberOfDays,
         0,
       );
       const pendingReservationsIncome = room.reserved

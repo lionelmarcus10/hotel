@@ -82,7 +82,7 @@ onMounted(async () => {
           <CardDescription>Chiffre d'affaire</CardDescription>
         </CardHeader>
         <CardContent>
-          <IncrementalNumber class="text-7xl font-bold" :endValue="stats.income" :money="true"/>
+          <IncrementalNumber class="text-5xl flex justify-start items-center my-auto font-bold" :endValue="stats.income" :money="true"/>
         </CardContent>
       </Card>
   </div>

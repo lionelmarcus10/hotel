@@ -37,7 +37,7 @@ const props = defineProps({
 <template>
   <Sheet>
     <SheetTrigger>
-      <Button class="outline py-2 px-4 rounded-lg transition-transform active:scale-95 flex w-full gap-x-4 items-center">
+      <Button class="outline bg-white text-black hover:bg-white  py-2 px-4 rounded-lg transition-transform active:scale-95 flex w-full gap-x-4 items-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rows-4"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M21 7.5H3"/><path d="M21 12H3"/><path d="M21 16.5H3"/></svg>      
           <span>Prévisualiser</span>
     </Button>
@@ -144,7 +144,7 @@ const props = defineProps({
                   
               </div>
               <div v-else>
-                <p class="text-center pt-5">Aucune réservation à passé</p>
+                <p class="text-center pt-5">Aucune réservation passé</p>
                 </div>
           </div>
         </div>

@@ -53,9 +53,13 @@ export async function generateRoomReservationDetails(
       generateReservationDates();
     const reservationDetails: RoomReservationDetails = {
       description: faker.lorem.sentence(),
-      numberOfDays: faker.number.int({ min: 1, max: 20 }),
-      reservationEndDate: reservationEndDate,
-      reservationStartDate: reservationStartDate,
+      numberOfDays: Math.ceil(
+        (new Date(reservationEndDate).getTime() -
+          new Date(reservationStartDate).getTime()) /
+          (1000 * 60 * 60 * 24),
+      ),
+      reservationEndDate: new Date(reservationEndDate),
+      reservationStartDate: new Date(reservationStartDate),
       userId: randomUsers[i],
       price: room.price,
     };
