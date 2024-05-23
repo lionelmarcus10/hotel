@@ -51,6 +51,54 @@ const props = defineProps({
         </SheetDescription>
         <div class="overflow-y-scroll max-h-screen mb-5 pb-40 w-full flex flex-col invisible-scrollbar">
           
+
+          <div class="pt-5">
+            <h1 class="font-bold text-xl pb-2">Réservations en cours</h1>
+              <div v-if="reservations.current.length > 0" v-for="current in reservations.current">
+                    <Card class="transition-transform hover:scale-90 scale-95">
+                      <CardHeader class="pb-2">
+                          <CardTitle>
+                          <div>
+                            <span class="">Chambre {{ current.id }}: </span>
+                            <span class="text-lg">{{ current.name }}</span>
+                          </div>
+                          </CardTitle>
+                          
+                          <CardDescription>{{ current.nextReservationDetails.description}}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                          <div class="flex flex-col">
+                            <div class="flex flex-row justify-between">
+                                  <p>Prix par jour</p>
+                                  <p>{{ current.reservationDetails.price }}$</p>
+                              </div>
+                              <div class="flex flex-row justify-between">
+                                  <p>Nombre de jours</p>
+                                  <p>{{ current.reservationDetails.numberOfDays }}</p>
+                              </div>
+                              <div class="flex flex-row justify-between">
+                                  <p>Prix total</p>
+                                  <p>{{ current.reservationDetails.price * current.reservationDetails.numberOfDays }}$</p>
+                              </div>
+                          </div>
+                      </CardContent>
+                      <CardFooter class="flex flex-col w-full !px-7 gap-2 pb-4">
+                       <p class="text-left"> Du {{ formatDate(new Date(current.reservationDetails.reservationStartDate)) }} au  {{ formatDate(new Date(current.reservationDetails.reservationEndDate)) }}</p>
+
+                          <Button class="w-full">
+                            <a target="_blank" :href="'/chambres-disponible#' + current.id">Voir la chambre</a>
+                          </Button>
+                      </CardFooter>
+                  </Card> 
+                  
+              </div>
+              <div v-else>
+                <p class="text-center pt-5">Aucune réservation en cours</p>
+                </div>
+          </div>
+
+
+
           <div class="pt-5">
             <h1 class="font-bold text-xl pb-2">Réservations prochaines</h1>
               <div v-if="reservations.future.length > 0" v-for="next in reservations.future">
@@ -86,7 +134,7 @@ const props = defineProps({
                        <p class="text-left"> Du {{ formatDate(new Date(next_child.reservationStartDate)) }} au  {{ formatDate(new Date(next_child.reservationEndDate)) }}</p>
 
                           <Button class="w-full">
-                            <a target="_blank" href="/chambres-disponible">Voir la chambre</a>
+                            <a target="_blank" :href="'/chambres-disponible#' + next.id">Voir la chambre</a>
                           </Button>
                       </CardFooter>
                   </Card>
@@ -136,7 +184,7 @@ const props = defineProps({
                        <p class="text-left"> Du {{ formatDate(new Date(prev_child.reservationStartDate)) }} au  {{ formatDate(new Date(prev_child.reservationEndDate)) }}</p>
 
                           <Button class="w-full">
-                            <a target="_blank" href="/chambres-disponible">Voir la chambre</a>
+                            <a target="_blank" :href="'/chambres-disponible#' + prev.id">Voir la chambre</a>
                           </Button>
                       </CardFooter>
                   </Card>

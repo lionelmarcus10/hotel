@@ -63,9 +63,9 @@
     :modules="modules"
     
     >
-      <swiper-slide><img src="../assets/Carrousel 1.webp"/></swiper-slide>
-      <swiper-slide><img src="../assets/Carrousel 2.webp"/></swiper-slide>
-      <swiper-slide><img src="../assets/Carrousel 3.webp"/></swiper-slide>
+      <swiper-slide class="z-10"><img src="../assets/Carrousel 1.webp"/></swiper-slide>
+      <swiper-slide class="z-10"><img src="../assets/Carrousel 2.webp"/></swiper-slide>
+      <swiper-slide class="z-10"><img src="../assets/Carrousel 3.webp"/></swiper-slide>
       
     </swiper>
     

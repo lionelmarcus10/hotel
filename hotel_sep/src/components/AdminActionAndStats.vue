@@ -86,8 +86,5 @@ onMounted(async () => {
         </CardContent>
       </Card>
   </div>
-  <div class="">
-  <!-- chart data : reservations historique , user creation date -->
-    <p>Lio</p>
-  </div>
+ 
 </template>

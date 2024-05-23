@@ -76,18 +76,6 @@ export class RoomController {
     );
   }
 
-  // chambres disponibles
-  @Get('/rooms/disponible')
-  findDisponibleRooms(): Room[] {
-    return this.roomService.findDisponibleRooms();
-  }
-
-  // chambres non disponibles
-  @Get('/rooms/reserved')
-  findReservedRooms(): Room[] {
-    return this.roomService.findReservedRooms();
-  }
-
   // detail d'une reservation
   @Get('/rooms/reservations/:id')
   findReservationById(

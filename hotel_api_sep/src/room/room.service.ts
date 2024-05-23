@@ -148,16 +148,6 @@ export class RoomService {
     return this.rooms;
   }
 
-  // chambres disponibles
-  findDisponibleRooms(): Room[] {
-    return this.rooms.filter((room) => !room.reserved);
-  }
-
-  // chambres non disponibles
-  findReservedRooms(): Room[] {
-    return this.rooms.filter((room) => room.reserved);
-  }
-
   // detail d'une chambre
   findRoomById(id: number): Room {
     // faire un truc pour chambre non existante

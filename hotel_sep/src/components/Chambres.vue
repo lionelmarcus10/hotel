@@ -1,8 +1,28 @@
 <script setup>
+import { onMounted, ref, watch } from 'vue';
 import DisplayRoom from './DisplayRoom.vue';
+import { getAllRooms } from '@/utils/rooms';
+import {  useAuth } from 'vue-clerk'
+import { getUserReservations } from '@/utils/users';
+import { useRoomStore } from '@/store/roomStore';
 
+const { isSignedIn, userId } = useAuth()
 
-const Suits = [ "Suite Junior", "Chambre Standart","Chambre Supérieur"];
+const store = useRoomStore();
+const rooms = ref([]);
+
+onMounted(async () => {
+   let allRooms = await getAllRooms()
+    rooms.value = allRooms;
+})
+
+watch( [userId, isSignedIn, rooms.value], async () => {
+  if(isSignedIn && userId.value && rooms.value.length > 0){
+    let userReservations = await getUserReservations(userId.value, rooms.value)
+    store.updateRooms(userReservations)
+}
+})
+
 </script>
 <template>
     <div class="container px-4 md:px-0 lg:px-24 xl:px-56 space-y-5">
@@ -32,7 +52,7 @@ const Suits = [ "Suite Junior", "Chambre Standart","Chambre Supérieur"];
             <hr class="bg-gray-500 h-[3px]">
         
             <div class=" flex flex-col sm:space-y-5 space-y-9 ">
-                <DisplayRoom v-for="elements in Suits">{{ elements }}</DisplayRoom>
+                <DisplayRoom v-for="room in rooms" :key="room.id" :room="room" />
             </div>
 
             

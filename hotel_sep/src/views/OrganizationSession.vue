@@ -24,7 +24,7 @@ watch([user, isLoaded], () => {
         <OrganizationSwitcher 
          defaultOpen="true" afterSwitchOrganizationUrl="/admin-dashboard" 
           afterLeaveOrganizationUrl="/" organizationProfileMode="modal"
-           appearance="undefined" createOrganizationUrl="/organization"
+           appearance="undefined" createOrganizationUrl="/admin-dashboard"
             organizationProfileUrl="/admin-dashboard" class="pt-5" />
       </div>
       <div class="">
